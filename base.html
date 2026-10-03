@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0a" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="CodeBugFinder" />
+<title>CodeBugFinder</title>
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json" />
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Markdown + Sanitizer -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+
+<!-- highlight.js (syntax highlighting for code blocks) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+<!-- App Styles -->
+<link rel="stylesheet" href="/base.css" />
+<link rel="stylesheet" href="/components.css" />
+
+<!-- Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js');
+    });
+  }
+</script>
+</head>
+<body>
+
+<!-- ============================================================
+     AUTH SCREENS  (signup / login / forgot PIN)
+     ============================================================ -->
+
+<!-- ---------- SCREEN 1: SIGN UP ---------- -->
+<div class="auth-screen" id="signupScreen">
+  <div class="auth-card">
+    <div class="auth-logo">🐛</div>
+    <h1 class="auth-title">Create Account</h1>
+    <p class="auth-sub">Set up your personal code-bug assistant.</p>
+
+    <div class="auth-step" id="stepName">
+      <label class="auth-label">Choose a Nickname</label>
+      <input type="text" id="signupName" class="auth-input" placeholder="e.g. Sulman" maxlength="20" />
+      <button class="auth-btn" id="signupNameBtn">Continue</button>
+      <p style="margin-top: 15px; font-size: 13px; color: #888;">
+        Already have an account? <a href="#" onclick="showLogin(); return false;" style="color: #3b82f6;">Log in</a>
+      </p>
+    </div>
+
+    <div class="auth-step hidden" id="stepPin">
+      <label class="auth-label">Hi <span id="greetName">friend</span> 👋</label>
+      <p class="auth-hint">Create a 4-digit PIN</p>
+      <div class="pin-dots" id="signupPinDots"><span></span><span></span><span></span><span></span></div>
+      <div class="pin-pad" id="signupPinPad"></div>
+    </div>
+
+    <div class="auth-step hidden" id="stepPinConfirm">
+      <label class="auth-label">Confirm your PIN</label>
+      <div class="pin-dots" id="signupPinDotsConfirm"><span></span><span></span><span></span><span></span></div>
+      <div class="pin-pad" id="signupPinPadConfirm"></div>
+    </div>
+
+    <div class="auth-step hidden" id="stepSecurity">
+      <label class="auth-label">Security Questions</label>
+      <input type="text" id="qRealName" class="auth-input" placeholder="What is your real name?" />
+      <select id="qPet" class="auth-input">
+        <option value="">Do you like Cats or Dogs?</option>
+        <option value="Cats">Cats</option>
+        <option value="Dogs">Dogs</option>
+      </select>
+      <input type="text" id="qAge" class="auth-input" placeholder="What is your age?" />
+      <button class="auth-btn" id="signupSubmitBtn">Sign Up</button>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- SCREEN 2: LOGIN ---------- -->
+<div class="auth-screen hidden" id="loginScreen">
+  <div class="auth-card">
+    <div class="auth-logo">🐛</div>
+    <h1 class="auth-title">Welcome Back</h1>
+    <p class="auth-sub">Log in to access your chats.</p>
+
+    <div class="auth-step" id="loginStepName">
+      <label class="auth-label">Enter your Username</label>
+      <input type="text" id="loginNameInput" class="auth-input" placeholder="Your nickname" maxlength="20" />
+      <button class="auth-btn" id="loginNameBtn">Continue</button>
+      <p style="margin-top: 15px; font-size: 13px; color: #888;">
+        Don't have an account? <a href="#" onclick="showSignup(); return false;" style="color: #3b82f6;">Sign up</a>
+      </p>
+    </div>
+
+    <div class="auth-step hidden" id="loginStepPin">
+      <label class="auth-label">Hi <span id="loginGreetName">friend</span> 👋</label>
+      <p class="auth-hint">Enter your PIN</p>
+      <div class="pin-dots" id="loginPinDots"><span></span><span></span><span></span><span></span></div>
+      <div class="pin-pad" id="loginPinPad"></div>
+      <button class="auth-link" id="forgotPinBtn">Forgot PIN?</button>
+    </div>
+  </div>
+</div>
+
+<!-- ---------- SCREEN 3: FORGOT PIN ---------- -->
+<div class="auth-screen hidden" id="forgotScreen">
+  <div class="auth-card">
+    <div class="auth-logo">🐛</div>
+    <h1 class="auth-title">Reset PIN</h1>
+    <p class="auth-sub">Answer your security questions.</p>
+
+    <div class="auth-step" id="forgotStepName">
+      <label class="auth-label">Enter your Username</label>
+      <input type="text" id="forgotNameInput" class="auth-input" placeholder="Your nickname" maxlength="20" />
+      <button class="auth-btn" id="forgotNameBtn">Continue</button>
+      <button class="auth-link" onclick="showLogin(); return false;">Back to Login</button>
+    </div>
+
+    <div class="auth-step hidden" id="forgotStepQuestions">
+      <label class="auth-label">Security Questions</label>
+      <input type="text" id="fRealName" class="auth-input" placeholder="What is your real name?" />
+      <select id="fPet" class="auth-input">
+        <option value="">Do you like Cats or Dogs?</option>
+        <option value="Cats">Cats</option>
+        <option value="Dogs">Dogs</option>
+      </select>
+      <input type="text" id="fAge" class="auth-input" placeholder="What is your age?" />
+      <button class="auth-btn" id="forgotVerifyBtn">Verify</button>
+      <button class="auth-link" onclick="showLogin(); return false;">Cancel</button>
+    </div>
+
+    <div class="auth-step hidden" id="forgotStepNewPin">
+      <label class="auth-label">Create New PIN</label>
+      <div class="pin-dots" id="forgotPinDots"><span></span><span></span><span></span><span></span></div>
+      <div class="pin-pad" id="forgotPinPad"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN CHAT APP  — pulled in from chat.html
+     ============================================================ -->
+{% include 'chat.html' %}
+
+<!-- ============================================================
+     APP SCRIPTS  (core.js MUST come before app.js)
+     ============================================================ -->
+<script src="/core.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

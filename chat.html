@@ -1,0 +1,87 @@
+<!-- ===================== MAIN APP ===================== -->
+<div class="app hidden" id="appRoot">
+  <!-- ---------- History Sidebar ---------- -->
+  <aside class="history-sidebar" id="historySidebar">
+    <div class="history-header">
+      <div class="brand-logo-sm">🐛</div>
+      <div class="history-title">Chats</div>
+      <button class="icon-btn-sm" id="closeHistory">✕</button>
+    </div>
+    <div class="sidebar-search">
+      <input type="text" id="searchChats" placeholder="Search chat content..." />
+    </div>
+    <button class="new-chat-btn" id="newChatBtn">+ New chat</button>
+    <div class="history-list" id="historyList"></div>
+    <div class="history-footer">
+      <div class="history-user">
+        <div class="user-avatar" id="userAvatar">S</div>
+        <div class="user-info">
+          <div class="user-name" id="userName">User</div>
+          <div class="user-status">Signed in</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+  <div class="history-overlay" id="historyOverlay"></div>
+
+  <!-- ---------- Main Column ---------- -->
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn" id="menuBtn">☰</button>
+      <div class="topbar-brand">
+        <div class="brand-logo">🐛</div>
+        <div class="brand-text">
+          <div class="brand-name">CodeBugFinder</div>
+          <div class="brand-sub" id="statusText">
+            <span class="status-dot"></span><span>CodeBugFinder</span>
+          </div>
+        </div>
+      </div>
+      <button class="icon-btn" id="settingsBtn">⚙</button>
+    </header>
+
+    <section class="welcome" id="welcomeScreen">
+      <div class="welcome-logo">🐛</div>
+      <h1 class="welcome-title">Paste code. I'll find the bugs.</h1>
+    </section>
+
+    <section class="chat" id="chatArea">
+      <div class="chat-inner" id="chatMessages"></div>
+    </section>
+
+    <div class="think-panel hidden" id="thinkPanel"></div>
+
+    <div class="composer" id="composer">
+      <div class="composer-actions-left">
+        <button class="toggle-btn" id="toggleBugfinder"><span>🐛</span> Bug Finder</button>
+        <button class="toggle-btn" id="toggleThink"><span>🧠</span> Think</button>
+        <button class="toggle-btn" id="toggleSearch"><span>🌐</span> Search</button>
+        <button class="toggle-btn" id="toggleImage"><span>🖼️</span> Image</button>
+      </div>
+      <div id="attachmentPreview" class="attachment-preview hidden"></div>
+      <div class="composer-input-row">
+        <button class="attach-btn" id="attachBtn">📎</button>
+        <textarea id="input" rows="1" placeholder="Paste code or ask a question…"></textarea>
+        <button class="send-btn" id="sendBtn">➤</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===================== ATTACH MENU ===================== -->
+<div class="attach-menu hidden" id="attachMenu">
+  <div class="attach-option" id="attachCamera">
+    <div class="attach-icon">📷</div>
+    <div class="attach-label">Camera</div>
+  </div>
+  <div class="attach-option" id="attachPhoto">
+    <div class="attach-icon">🖼️</div>
+    <div class="attach-label">Photo</div>
+  </div>
+  <div class="attach-option" id="attachDoc">
+    <div class="attach-icon">📄</div>
+    <div class="attach-label">Code / Document</div>
+  </div>
+</div>
+<input type="file" id="fileInput" style="display:none;">
