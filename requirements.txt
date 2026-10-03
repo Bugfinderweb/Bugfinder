@@ -1,0 +1,5 @@
+flask
+gunicorn
+httpx
+python-dotenv
+duckduckgo_search
