@@ -23,7 +23,7 @@ from services import (
 # ------------------------------------------------------------
 # APP INIT
 # ------------------------------------------------------------
-app = Flask(__name__)
+app = Flask(__name__, template_folder=".")
 init_db()
 boot_log()
 
